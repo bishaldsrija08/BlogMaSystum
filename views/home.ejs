@@ -1,0 +1,79 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Home</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Import header  -->
+    <%- include('../components/navbar.ejs') %>
+    <section id="home" class="hero">
+      <div class="container">
+        <h2>Welcome to YourBrand</h2>
+        <p>Clean, fast, and responsive web experiences.</p>
+        <a href="#features" class="btn">Explore Features</a>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container grid-2">
+        <div>
+          <h3>About Us</h3>
+          <p>
+            We craft modern solutions that empower businesses and delight users.
+          </p>
+        </div>
+        <img src="https://picsum.photos/600/400?random=1" alt="Team working" />
+      </div>
+    </section>
+
+    <section id="features" class="features">
+      <div class="container">
+        <h3 class="section-title">Core Features</h3>
+        <div class="grid-3">
+          <article class="card">
+            <h4>Performance</h4>
+            <p>Optimized for speed and scalability.</p>
+          </article>
+          <article class="card">
+            <h4>Accessibility</h4>
+            <p>WCAG-friendly interfaces for everyone.</p>
+          </article>
+          <article class="card">
+            <h4>Support</h4>
+            <p>24/7 assistance from real humans.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container">
+        <h3>Get in Touch</h3>
+        <form class="contact-form">
+          <input type="text" placeholder="Name" required />
+          <input type="email" placeholder="Email" required />
+          <textarea placeholder="Message" rows="4" required></textarea>
+          <button type="submit" class="btn">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>&copy; <span id="year"></span> YourBrand. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Mobile nav toggle
+      const navToggle = document.getElementById("navToggle");
+      const nav = document.getElementById("nav");
+      navToggle.addEventListener("click", () => nav.classList.toggle("open"));
+
+      // Dynamic year
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

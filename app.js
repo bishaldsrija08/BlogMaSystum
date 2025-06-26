@@ -1,12 +1,18 @@
 const express = require('express')
 const app = express()
 
+//ejs buj
+app.set('view engine', 'ejs')
+
+//css buj
+app.use(express.static('public'))
+
 app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
+  res.render('home', { data: 'Hello World!' })
 })
 
 app.get('/about', (req, res) => {
-  res.send('<h1>About Page</h1>')
+  res.render('about', { data: 'About Us' })
 })
 
 app.listen(4000, () => {
