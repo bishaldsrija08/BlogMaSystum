@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+require('dotenv').config();
 
 //ejs buj
 app.set('view engine', 'ejs')
@@ -15,6 +16,7 @@ app.get('/about', (req, res) => {
   res.render('about', { data: 'About Us' })
 })
 
-app.listen(4000, () => {
-  console.log('Server is running on port 4000')
+const port = process.env.PORT
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
 })
