@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Blogs</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <!-- Import header  -->
+    <%- include('../components/navbar.ejs') %>
+
+    <!-- ───────────── BLOG FORM ───────────── -->
+    <section class="blog-section">
+      <form class="blog-form" action="/blog" method="post">
+        <h2 class="blog-form__heading">New Blog Post</h2>
+
+        <label>
+          <span>Title</span>
+          <input
+            type="text"
+            name="title"
+            placeholder="Enter blog title"
+            required
+          />
+        </label>
+
+        <label>
+          <span>Subtitle</span>
+          <input
+            type="text"
+            name="subtitle"
+            placeholder="Enter subtitle"
+            required
+          />
+        </label>
+
+        <label>
+          <span>Description</span>
+          <textarea
+            name="description"
+            rows="6"
+            placeholder="Write your post..."
+            required
+          ></textarea>
+        </label>
+
+        <button type="submit" class="btn-primary">Publish</button>
+      </form>
+    </section>
+  </body>
+</html>
