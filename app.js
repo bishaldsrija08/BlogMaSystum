@@ -27,7 +27,11 @@ app.get("/blog", (req,res)=>{
 
 //create blog
 app.post("/blog", (req,res)=>{
-    console.log(req.body)
+    const{ title, subtitle, description } = req.body
+    console.log("This is the blog data", title, subtitle, description)
+    res.json({
+        message: "Blog created successfully"
+    })
 })
 
 //update blog
