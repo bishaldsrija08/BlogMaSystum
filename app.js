@@ -2,6 +2,9 @@
 const express = require('express')
 const app = express()
 
+//database connection
+require('./model/index.js')
+
 //json buj
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -44,8 +47,7 @@ app.delete("/blog/:id", (req,res)=>{
     res.render('singleBlog')
 })
 
-
-
+//server starting in port
 const port = process.env.PORT
 app.listen(port, (req,res)=>{
     console.log(`Project successfully started at ${port}`)
