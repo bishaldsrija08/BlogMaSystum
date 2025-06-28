@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Responsive Card Demo</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-   <!-- Import header  -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Card Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Import header  -->
     <%- include('../components/navbar.ejs') %>
 
-  <main class="wrapper">
-    <article class="card">
-      <h2 class="card__title">Card Title</h2>
-      <h3 class="card__subtitle">Subtitle goes right here</h3>
-      <p class="card__desc">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-        bibendum, velit ut efficitur vestibulum, tellus eros dignissim mauris,
-        sed viverra augue lorem a magna.
-      </p>
-    </article>
-  </main>
-</body>
+    <main class="wrapper">
+      <%data.map((blog)=>{%>
+      <article class="card">
+        <h2 class="card__title"><%= blog.title%></h2>
+        <h3 class="card__subtitle"><%= blog.subtitle%></h3>
+        <p class="card__desc"><%= blog.description%></p>
+        <a href="/blog/<%= blog.id %>" class="card-link">
+          <span><i>Read More</i></span>
+        </a>
+        <br>
+        <a href="/blog/<%=blog.id%>">Delete</a>
+      </article>
+      <% }) %>
+    </main>
+  </body>
 </html>

@@ -1,5 +1,7 @@
 //Require Express
 const express = require('express')
+const { blogs } = require('./model/index.js')
+const { where } = require('sequelize')
 const app = express()
 
 //database connection
@@ -7,7 +9,7 @@ require('./model/index.js')
 
 //json buj
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 
 //require dotenv
 require('dotenv').config()
@@ -19,36 +21,51 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 //get all blogs in home page
-app.get("/", (req,res)=>{
-    res.render('blogs')
+app.get("/", async (req, res) => {
+    const data = await blogs.findAll()
+    res.render('blogs', { data })
+})
+
+
+//get single blogs in home page
+app.get("/blog/:id", async (req, res) => {
+    const id = req.params.id
+    const singleData = await blogs.findAll({
+        where: { id: id }
+    })
+    res.render('singleBlog', { data: singleData })
 })
 
 //get add blog form page
-app.get("/blog", (req,res)=>{
+app.get("/blog", (req, res) => {
     res.render('createBlog')
 })
 
 //create blog
-app.post("/blog", (req,res)=>{
-    const{ title, subtitle, description } = req.body
-    console.log("This is the blog data", title, subtitle, description)
-    res.json({
-        message: "Blog created successfully"
+app.post("/blog", async (req, res) => {
+    const { title, subtitle, description } = req.body
+    await blogs.create({
+        title: title,
+        subtitle: subtitle,
+        description: description
     })
+    res.redirect('/')
 })
 
 //update blog
-app.patch("/blog/:id", (req,res)=>{
+app.patch("/blog/:id", (req, res) => {
     res.render('singleBlog')
 })
 
 // delete blog
-app.delete("/blog/:id", (req,res)=>{
-    res.render('singleBlog')
+app.delete("/blog/:id", async (req, res) => {
+    const id = req.params.id
+    await blogs.destroy({ where: { id } })
+    res.redirect('/')
 })
 
 //server starting in port
 const port = process.env.PORT
-app.listen(port, (req,res)=>{
+app.listen(port, (req, res) => {
     console.log(`Project successfully started at ${port}`)
 })
