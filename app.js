@@ -28,7 +28,7 @@ app.get("/", async (req, res) => {
 
 
 //get single blogs in home page
-app.get("/blog/:id", async (req, res) => {
+app.get("/single/:id", async (req, res) => {
     const id = req.params.id
     const singleData = await blogs.findAll({
         where: { id: id }
@@ -42,7 +42,7 @@ app.get("/blog", (req, res) => {
 })
 
 //create blog
-app.post("/blog", async (req, res) => {
+app.post("/create", async (req, res) => {
     const { title, subtitle, description } = req.body
     await blogs.create({
         title: title,
@@ -53,14 +53,14 @@ app.post("/blog", async (req, res) => {
 })
 
 //update blog
-app.patch("/blog/:id", (req, res) => {
+app.patch("/update/:id", (req, res) => {
     res.render('singleBlog')
 })
 
 // delete blog
-app.delete("/blog/:id", async (req, res) => {
-    const id = req.params.id
-    await blogs.destroy({ where: { id } })
+app.get("/delete/:id", async (req, res) => {
+    const { id } = req.params
+    await blogs.destroy({ where: { id: id } })
     res.redirect('/')
 })
 

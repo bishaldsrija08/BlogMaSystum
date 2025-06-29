@@ -19,11 +19,10 @@
         <h2 class="card__title"><%= blog.title %></h2>
         <h3 class="card__subtitle"><%= blog.subtitle %></h3>
         <p class="card__desc"><%= blog.description %></p>
-        <a href="/blog/<%= blog.id %>" class="card-link">
+        <a href="/single/<%= blog.id %>" class="card-link">
           <span><i>Read More</i></span>
         </a>
         <br />
-        <a href="/blog/<%= blog.id %>">Delete</a>
       </article>
     <% }); %>
   <% } %>
