@@ -9,7 +9,7 @@ require('./model/index.js')
 
 //json buj
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 
 //require dotenv
 require('dotenv').config()
@@ -18,7 +18,7 @@ require('dotenv').config()
 app.set('view engine', 'ejs')
 
 //css buj
-app.use(express.static('public'))
+app.use(express.static('public/'))
 
 //get all blogs in home page
 app.get("/", async (req, res) => {
@@ -41,6 +41,16 @@ app.get("/blog", (req, res) => {
     res.render('createBlog')
 })
 
+//get edit blog form page
+app.get("/edit/:id", async (req, res) => {
+    const id = req.params.id
+    //find single blog by id
+    const singleData = await blogs.findAll({
+        where: { id: id }
+    })
+    res.render('editBlog', { data: singleData })
+})
+
 //create blog
 app.post("/create", async (req, res) => {
     const { title, subtitle, description } = req.body
@@ -53,8 +63,17 @@ app.post("/create", async (req, res) => {
 })
 
 //update blog
-app.patch("/update/:id", (req, res) => {
-    res.render('singleBlog')
+app.post("/edit/:id", (req, res) => {
+    const id = req.params.id
+    const { title, subtitle, description } = req.body
+    blogs.update({
+        title: title,
+        subtitle: subtitle,
+        description: description
+    }, {
+        where: { id: id }
+    })
+    res.send("Blog updated successfully")
 })
 
 // delete blog

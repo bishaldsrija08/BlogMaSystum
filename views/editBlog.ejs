@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Blogs</title>
-    <link rel="stylesheet" href="/style.css" />
+    <title>Edit Blogs</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <!-- Import header  -->
@@ -12,13 +12,14 @@
 
     <!-- ───────────── BLOG FORM ───────────── -->
     <section class="blog-section">
-      <form class="blog-form" action="/create" method="post">
-        <h2 class="blog-form__heading">New Blog Post</h2>
+      <form action="/edit/<%= data[0].id %>" method="post">
+        <h2 class="blog-form__heading">Edit Blog</h2>
 
         <label>
           <span>Title</span>
           <input
             type="text"
+            value="<%=data[0].title%>"
             name="title"
             placeholder="Enter blog title"
             required
@@ -29,6 +30,7 @@
           <span>Subtitle</span>
           <input
             type="text"
+            value="<%=data[0].subtitle%>"
             name="subtitle"
             placeholder="Enter subtitle"
             required
@@ -40,12 +42,16 @@
           <textarea
             name="description"
             rows="6"
+            cols="30"
+            class="blog-form__textarea"
             placeholder="Write your post..."
             required
-          ></textarea>
+          >
+<%=data[0].description%></textarea
+          >
         </label>
 
-        <button type="submit" class="btn-primary">Publish</button>
+        <button type="submit" class="btn-primary">Edit</button>
       </form>
     </section>
   </body>

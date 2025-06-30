@@ -10,11 +10,10 @@
     <!-- Import header  -->
     <%- include('../components/navbar.ejs') %>
 
-<main class="wrapper">
-  <% if (data.length === 0) { %>
-    <h1 class="no-data">No Blogs Found</h1>
-  <% } else { %>
-    <% data.forEach((blog) => { %>
+    <main class="wrapper">
+      <% if (data.length === 0) { %>
+      <h1 class="no-data">No Blogs Found</h1>
+      <% } else { %> <% data.forEach((blog) => { %>
       <article class="card">
         <h2 class="card__title"><%= blog.title %></h2>
         <h3 class="card__subtitle"><%= blog.subtitle %></h3>
@@ -24,9 +23,7 @@
         </a>
         <br />
       </article>
-    <% }); %>
-  <% } %>
-</main>
-
+      <% }); %> <% } %>
+    </main>
   </body>
 </html>
