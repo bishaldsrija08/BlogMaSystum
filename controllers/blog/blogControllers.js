@@ -37,8 +37,22 @@ exports.renderEditBlogForm = async (req, res) => {
     res.render('editBlog', { data: singleData })
 }
 
+exports.updateBlog = (req, res) => {
+    const id = req.params.id
+    const { title, subtitle, description } = req.body
+    blogs.update({
+        title: title,
+        subtitle: subtitle,
+        description: description
+    }, {
+        where: { id: id }
+    })
+    res.send("Blog updated successfully")
+}
+
 exports.deleteBlog = async (req, res) => {
     const { id } = req.params
     await blogs.destroy({ where: { id: id } })
     res.redirect('/')
 }
+
