@@ -2,16 +2,25 @@ const bcrypt = require('bcrypt')
 const { User } = require('../../model')
 
 exports.createUser = async (req, res) => {
-    const { username, email, password } = req.body
-    if (!username || !email || !password) {
+    const { username, email, password, confirmPassword } = req.body
+    if (!username || !email || !password || !confirmPassword) {
         return res.status(400).send('All fields are required')
+    }
+    if (password.toLowerCase() !== confirmPassword.toLowerCase()) {
+        return res.status(400).send('Passwords do not match')
+    }
+    if (password.length < 10) {
+        return res.status(400).send('Password must be at least 6 characters long')
+    }
+    if (password.trim() === "" || confirmPassword.trim() === "") {
+        return res.status(400).send('Password cannot be empty')
     }
     await User.create({
         username,
         email,
         password: await bcrypt.hash(password, 10)
     })
-    res.status(201).send('User registered successfully')
+    res.redirect('/login')
 }
 
 exports.loginUser = async (req, res) => {
@@ -30,7 +39,7 @@ exports.loginUser = async (req, res) => {
     if (!isMatch) {
         return res.status(401).send('Invalid credentials')
     }
-    res.status(200).send('Login successful')
+    res.redirect('/')
 }
 
 exports.renderRegisterForm = (req, res) => {

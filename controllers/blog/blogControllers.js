@@ -47,7 +47,7 @@ exports.updateBlog = (req, res) => {
     }, {
         where: { id: id }
     })
-    res.send("Blog updated successfully")
+    res.redirect('/')
 }
 
 exports.deleteBlog = async (req, res) => {

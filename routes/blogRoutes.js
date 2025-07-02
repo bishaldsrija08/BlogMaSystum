@@ -9,4 +9,4 @@ router.route("/edit/:id").get(renderEditBlogForm).post(updateBlog) // Assuming y
 router.route("/create").post(renderCreateBlogForm) // Assuming you want to create a blog
 router.route("/delete/:id").get(deleteBlog)
 router.route("/create").post(renderCreateBlogForm) // Assuming you want to create a blog here, adjust as necessary
-module.exports = router 
+module.exports = router
