@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const { User } = require('../../model')
+const jwt = require('jsonwebtoken')
 
 exports.createUser = async (req, res) => {
     const { username, email, password, confirmPassword } = req.body
@@ -39,7 +40,12 @@ exports.loginUser = async (req, res) => {
     if (!isMatch) {
         return res.status(401).send('Invalid credentials')
     }
-    res.redirect('/')
+    // Here you can generate a JWT token and send it back to the client
+    const token = jwt.sign({ id: isUser.id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN || "1d"
+    });
+    res.cookie('token', token)
+    res.send("Login successful, you can now access protected routes")
 }
 
 exports.renderRegisterForm = (req, res) => {
