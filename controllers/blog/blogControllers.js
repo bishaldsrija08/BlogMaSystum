@@ -1,14 +1,20 @@
 const { blogs } = require("../../model")
 
-exports.createBlog = async (req, res) => async (req, res) => {
+exports.createBlog = async (req, res) => {
+    const userId = req.user.id        // ❌ was req.user[0].id – req.user is an object, not an array
+    console.log(userId, "haha hehe huuuuu")
     const { title, subtitle, description } = req.body
+
     await blogs.create({
-        title: title,
-        subtitle: subtitle,
-        description: description
+        title,
+        subtitle,
+        description,
+        userId
     })
+
     res.redirect('/')
 }
+
 
 exports.renderCreateBlogForm = (req, res) => {
     res.render('createBlog')

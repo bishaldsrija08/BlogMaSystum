@@ -2,8 +2,8 @@
 const express = require('express')
 
 const blogRoutes = require('./routes/blogRoutes')
+const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
-const { createUser, loginUser, renderLoginForm, renderRegisterForm } = require('./controllers/auth/userControllers.js')
 const app = express()
 
 //database connection
@@ -12,6 +12,8 @@ require('./model/index.js')
 //json buj
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+//cookie parser
+app.use(cookieParser())
 
 //require dotenv
 require('dotenv').config()
