@@ -1,8 +1,7 @@
-const { blogs } = require("../../model")
+const { blogs, User } = require("../../model")
 
 exports.createBlog = async (req, res) => {
-    const userId = req.user.id        // ❌ was req.user[0].id – req.user is an object, not an array
-    console.log(userId, "haha hehe huuuuu")
+    const userId = req.user.id // ❌ was req.user[0].id – req.user is an object, not an array
     const { title, subtitle, description } = req.body
 
     await blogs.create({
@@ -22,7 +21,12 @@ exports.renderCreateBlogForm = (req, res) => {
 
 
 exports.getAllBlogs = async (req, res) => {
-    const data = await blogs.findAll()
+    const data = await blogs.findAll({
+        include: {
+            model: User
+        }
+    })
+    console.log(data)
     res.render('blogs', { data })
 }
 
