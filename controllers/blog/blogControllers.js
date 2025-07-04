@@ -1,3 +1,4 @@
+const e = require("express")
 const { blogs, User } = require("../../model")
 
 exports.createBlog = async (req, res) => {
@@ -23,7 +24,7 @@ exports.renderCreateBlogForm = (req, res) => {
 exports.getAllBlogs = async (req, res) => {
     const data = await blogs.findAll({
         include: {
-            model: User
+            model: User //joining tables 
         }
     })
     console.log(data)
@@ -33,7 +34,10 @@ exports.getAllBlogs = async (req, res) => {
 exports.renderSingleBlog = async (req, res) => {
     const id = req.params.id
     const singleData = await blogs.findAll({
-        where: { id: id }
+        where: { id: id },
+        include: {
+            model: User //joining tables 
+        }
     })
     res.render('singleBlog', { data: singleData })
 }
@@ -66,3 +70,10 @@ exports.deleteBlog = async (req, res) => {
     res.redirect('/')
 }
 
+exports.renderMyBlogs = async (req, res) => {
+    const id = req.user.id
+    const myBlogs = await blogs.findAll({
+        where: { userId: id }
+    })
+    res.render('myBlogs', { data: myBlogs}) // Pass the user object to the view
+}

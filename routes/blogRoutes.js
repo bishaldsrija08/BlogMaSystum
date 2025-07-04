@@ -1,4 +1,4 @@
-const { getAllBlogs, renderSingleBlog, renderCreateBlogForm, renderEditBlogForm, deleteBlog, updateBlog, createBlog } = require('../controllers/blog/blogControllers');
+const { getAllBlogs, renderSingleBlog, renderCreateBlogForm, renderEditBlogForm, deleteBlog, updateBlog, createBlog, renderMyBlogs } = require('../controllers/blog/blogControllers');
 const { isAuthenticated } = require('../middlewares/isAuthenticated');
 
 const router = require("express").Router()
@@ -6,7 +6,7 @@ const router = require("express").Router()
 router.route("/").get(getAllBlogs)
 router.route("/single/:id").get(renderSingleBlog);
 router.route("/blog").get(renderCreateBlogForm)
-router.route("/edit/:id").get(renderEditBlogForm).post(updateBlog)
+router.route("/edit/:id").get(renderEditBlogForm).post(isAuthenticated, updateBlog)
 
 // ----------- PROBLEMS & FIXES -----------
 
@@ -16,9 +16,10 @@ router.route("/edit/:id").get(renderEditBlogForm).post(updateBlog)
 // ✅ Combine GET (show form) and POST (create blog) on the **same** route object.
 
 router.route("/create")
-      .get(isAuthenticated, renderCreateBlogForm)   // ✅ show “new blog” form
+      .get(renderCreateBlogForm)   // ✅ show “new blog” form
       .post(isAuthenticated, createBlog)            // ✅ actually create the blog
 
-router.route("/delete/:id").get(deleteBlog)
+router.route("/delete/:id").get(isAuthenticated, deleteBlog)
+router.route("/my-blogs").get(isAuthenticated,renderMyBlogs)
 
 module.exports = router
