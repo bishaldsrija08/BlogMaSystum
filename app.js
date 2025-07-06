@@ -23,7 +23,7 @@ app.set('view engine', 'ejs')
 
 //css buj
 app.use(express.static('public/'))
-
+app.use('/uploads/', express.static('uploads'))
 //blog routes
 app.use("/", blogRoutes)
 

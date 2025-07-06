@@ -4,11 +4,14 @@ const { blogs, User } = require("../../model")
 exports.createBlog = async (req, res) => {
     const userId = req.user.id // ❌ was req.user[0].id – req.user is an object, not an array
     const { title, subtitle, description } = req.body
+    // console.log(req.file.filename)
+    const image = req.file.filename // Get the uploaded file from the request
 
     await blogs.create({
         title,
         subtitle,
         description,
+        image, // Save the filename of the uploaded image
         userId
     })
 
@@ -27,7 +30,6 @@ exports.getAllBlogs = async (req, res) => {
             model: User //joining tables 
         }
     })
-    console.log(data)
     res.render('blogs', { data })
 }
 
@@ -75,5 +77,5 @@ exports.renderMyBlogs = async (req, res) => {
     const myBlogs = await blogs.findAll({
         where: { userId: id }
     })
-    res.render('myBlogs', { data: myBlogs}) // Pass the user object to the view
+    res.render('myBlogs', { data: myBlogs }) // Pass the user object to the view
 }

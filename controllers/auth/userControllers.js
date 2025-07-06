@@ -42,7 +42,7 @@ exports.loginUser = async (req, res) => {
     }
     // Here you can generate a JWT token and send it back to the client
     const token = jwt.sign({ id: isUser.id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN || "1d"
+        expiresIn: process.env.JWT_EXPIRES_IN || "30d"
     });
     res.cookie('token', token)
     res.send("Login successful, you can now access protected routes")

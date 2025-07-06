@@ -12,7 +12,7 @@
 
     <!-- ───────────── BLOG FORM ───────────── -->
     <section class="blog-section">
-      <form class="blog-form" action="/create" method="post">
+      <form class="blog-form" action="/create" method="post" enctype="multipart/form-data">
         <h2 class="blog-form__heading">New Blog Post</h2>
 
         <label>
@@ -31,6 +31,16 @@
             type="text"
             name="subtitle"
             placeholder="Enter subtitle"
+            required
+          />
+        </label>
+        <label for="uploadFile">
+          <span>Thumbnai</span>
+          <input
+            type="file"
+            name="image"
+            id="uploadFile"
+            accept="image/*"
             required
           />
         </label>

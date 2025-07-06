@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         description: {
             type: DataTypes.TEXT,
             allowNull: false,
+        },
+        image: {
+            type: DataTypes.STRING,
+            allowNull: true, // Allow null if no image is uploaded
         }
 
     });
