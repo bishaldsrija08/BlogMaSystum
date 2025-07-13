@@ -45,7 +45,7 @@ exports.loginUser = async (req, res) => {
         expiresIn: process.env.JWT_EXPIRES_IN || "30d"
     });
     res.cookie('token', token)
-    res.send("Login successful, you can now access protected routes")
+    res.redirect('/')
 }
 
 exports.renderRegisterForm = (req, res) => {
@@ -55,4 +55,9 @@ exports.renderRegisterForm = (req, res) => {
 
 exports.renderLoginForm = (req, res) => {
     res.render('login')
+}
+
+exports.logOUt = (req, res) => {
+    res.clearCookie('token')
+    res.redirect('/login')
 }

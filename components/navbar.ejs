@@ -1,21 +1,25 @@
-  <!-- ───────────── NAVBAR ───────────── -->
-  <header class="nav">
-    <a href="/" class="nav__brand">MySite</a>
+<!-- ───────────── NAVBAR ───────────── -->
+<header class="nav">
+  <a href="/" class="nav__brand">MySite</a>
 
-    <!-- Hamburger button (mobile) -->
-    <button class="nav__toggle" aria-label="Menu">
-      <span class="nav__bar"></span>
-      <span class="nav__bar"></span>
-      <span class="nav__bar"></span>
-    </button>
+  <!-- Hamburger button (mobile) -->
+  <button class="nav__toggle" aria-label="Menu">
+    <span class="nav__bar"></span>
+    <span class="nav__bar"></span>
+    <span class="nav__bar"></span>
+  </button>
 
-    <!-- Link list -->
-    <nav class="nav__menu">
-      <a href="/" class="nav__link">Home</a>
+  <!-- Link list -->
+  <nav class="nav__menu">
+    <a href="/" class="nav__link">Home</a>
+    <a href="#" class="nav__link">About</a>
+    <% if (currentUser) { %>
       <a href="/blog" class="nav__link">Create Blog</a>
-      <a href="#" class="nav__link">About</a>
-      <a href="/login" class="nav__link nav__btn">Login</a>
-      <a href="/register" class="nav__link nav__btn">Register</a>
-      <a href="/my-blogs" class="nav__link nav__btn">My blogs</a>
-    </nav>
-  </header>
+      <a href="/my-blogs" class="nav__link">My blogs</a>
+    <a href="/logout" class="nav__link nav__btn">Logout</a>
+    <% } else { %>
+    <a href="/login" class="nav__link nav__btn">Login</a>
+    <a href="/register" class="nav__link nav__btn">Register</a>
+    <% } %>
+  </nav>
+</header>

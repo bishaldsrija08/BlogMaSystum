@@ -4,6 +4,9 @@ const { blogs, User } = require("../../model")
 exports.createBlog = async (req, res) => {
     const userId = req.user.id // ❌ was req.user[0].id – req.user is an object, not an array
     const { title, subtitle, description } = req.body
+    if (!title || !subtitle || !description || !req.file) {
+        return res.status(400).send('All fields are required')
+    }
     // console.log(req.file.filename)
     const image = req.file.filename // Get the uploaded file from the request
 
@@ -11,18 +14,16 @@ exports.createBlog = async (req, res) => {
         title,
         subtitle,
         description,
-        image, // Save the filename of the uploaded image
+        image: process.env.IMAGE_UPLOAD_PATH + image, // Save the filename of the uploaded image
         userId
     })
 
     res.redirect('/')
 }
 
-
 exports.renderCreateBlogForm = (req, res) => {
     res.render('createBlog')
 }
-
 
 exports.getAllBlogs = async (req, res) => {
     const data = await blogs.findAll({

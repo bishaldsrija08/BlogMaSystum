@@ -8,7 +8,7 @@ const router = require("express").Router()
 router.route("/").get(getAllBlogs)
 router.route("/single/:id").get(renderSingleBlog);
 router.route("/blog").get(renderCreateBlogForm)
-router.route("/edit/:id").get(renderEditBlogForm).post(isAuthenticated, updateBlog)
+router.route("/edit/:id").get(isAuthenticated, renderEditBlogForm).post(isAuthenticated, updateBlog)
 
 // ----------- PROBLEMS & FIXES -----------
 
@@ -18,7 +18,7 @@ router.route("/edit/:id").get(renderEditBlogForm).post(isAuthenticated, updateBl
 // ✅ Combine GET (show form) and POST (create blog) on the **same** route object.
 
 router.route("/create")
-      .get(renderCreateBlogForm)   // ✅ show “new blog” form
+      .get(isAuthenticated, renderCreateBlogForm)   // ✅ show “new blog” form
       .post(isAuthenticated, upload.single("image"), createBlog)            // ✅ actually create the blog
 
 router.route("/delete/:id").get(isAuthenticated, deleteBlog)

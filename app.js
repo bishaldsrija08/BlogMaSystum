@@ -14,7 +14,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 //cookie parser
 app.use(cookieParser())
-
+app.use((req, res, next)=>{
+    res.locals.currentUser = req.cookies.token
+    next()
+})
 //require dotenv
 require('dotenv').config()
 

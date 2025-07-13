@@ -6,7 +6,7 @@ exports.isAuthenticated = async (req, res, next) => {
     const token = req.cookies.token
     // Check if token exists
     if (!token) {
-        return res.status(401).json('Unauthorized, Token must send.');
+        return res.redirect('/login')          // ❌ was `res.status(401).json('Unauthorized, No token found.')`
     }
 
     // Verify token
