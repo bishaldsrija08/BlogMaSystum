@@ -18,19 +18,19 @@
             class="blog-post__thumbnail"
             width="50%"
             height="auto"
-            src="<%= data[0].image %>"
+            src="<%= data[0]?.image %>"
             alt="Blog Thumbnail">
-          <h1 class="blog-post__title"><%= data[0].title%></h1>
-          <p class="blog-post__subtitle"><%= data[0].subtitle%></p>
+          <h1 class="blog-post__title"><%= data[0]?.title%></h1>
+          <p class="blog-post__subtitle"><%= data[0]?.subtitle%></p>
           <div class="blog-post__meta">
-            <span>By <b> <%= data[0].user.username %></span>
+            <span>By <b> <%= data[0]?.user?.username %></span>
             <time datetime="2025-06-27">27 June 2025</time>
           </div>
         </header>
 
-        <section class="blog-post__content"><%= data[0].description%></section>
-        <button><a href="/delete/<%= data[0].id %>">Delete</a></button>
-        <button><a href="/edit/<%= data[0].id %>">Edit</a></button>
+        <section class="blog-post__content"><%= data[0]?.description%></section>
+        <button><a href="/delete/<%= data[0]?.id %>">Delete</a></button>
+        <button><a href="/edit/<%= data[0]?.id %>">Edit</a></button>
       </article>
     </main>
 

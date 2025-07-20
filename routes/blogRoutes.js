@@ -1,14 +1,14 @@
 const { getAllBlogs, renderSingleBlog, renderCreateBlogForm, renderEditBlogForm, deleteBlog, updateBlog, createBlog, renderMyBlogs } = require('../controllers/blog/blogControllers');
 const { isAuthenticated } = require('../middlewares/isAuthenticated');
 const { multer, storage } = require('../middlewares/multer');
-const upload = multer({storage:storage})
+const upload = multer({ storage: storage })
 
 const router = require("express").Router()
 
 router.route("/").get(getAllBlogs)
 router.route("/single/:id").get(renderSingleBlog);
 router.route("/blog").get(renderCreateBlogForm)
-router.route("/edit/:id").get(isAuthenticated, renderEditBlogForm).post(isAuthenticated, updateBlog)
+router.route("/edit/:id").get(isAuthenticated, renderEditBlogForm).post(isAuthenticated, upload.single("image"), updateBlog)
 
 // ----------- PROBLEMS & FIXES -----------
 
@@ -22,6 +22,6 @@ router.route("/create")
       .post(isAuthenticated, upload.single("image"), createBlog)            // ✅ actually create the blog
 
 router.route("/delete/:id").get(isAuthenticated, deleteBlog)
-router.route("/my-blogs").get(isAuthenticated,renderMyBlogs)
+router.route("/my-blogs").get(isAuthenticated, renderMyBlogs)
 
 module.exports = router

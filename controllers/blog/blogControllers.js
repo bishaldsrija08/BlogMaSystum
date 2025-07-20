@@ -1,5 +1,5 @@
-const e = require("express")
 const { blogs, User } = require("../../model")
+const fs = require('fs')
 
 exports.createBlog = async (req, res) => {
     const userId = req.user.id // ❌ was req.user[0].id – req.user is an object, not an array
@@ -54,22 +54,63 @@ exports.renderEditBlogForm = async (req, res) => {
     res.render('editBlog', { data: singleData })
 }
 
-exports.updateBlog = (req, res) => {
+exports.updateBlog = async (req, res) => {
     const id = req.params.id
     const { title, subtitle, description } = req.body
-    blogs.update({
+    //old data find gareko
+    const oldImage = await blogs.findAll({
+        where: {
+            id: id
+        }
+    })
+    let fileName
+    //adi update garda file ako xa vane naya file halne natra puranai rakhne
+    if (req.file) {
+        fileName = process.env.IMAGE_UPLOAD_PATH + req.file.filename
+        //Naya file ayac purano delete garney
+        const oldImagePath = oldImage[0].image
+        const fileNameActual = oldImagePath.slice(22)
+        fs.unlink(`${fileNameActual}`, (err) => {
+            if (err) {
+                console.log("Error while deleting file" + err)
+            } else {
+                console.log("File Deleted successfully.")
+            }
+        })
+    } else {
+        fileName = oldImage[0].image
+    }
+    await blogs.update({
         title: title,
         subtitle: subtitle,
-        description: description
+        description: description,
+        image: fileName
     }, {
         where: { id: id }
     })
-    res.redirect('/')
+    res.redirect('/single/' + id)
 }
 
 exports.deleteBlog = async (req, res) => {
     const { id } = req.params
+
+    const oldImage = await blogs.findAll({
+        where: {
+            id: id
+        }
+    })
+
     await blogs.destroy({ where: { id: id } })
+
+    const oldImagePath = oldImage[0].image
+    const fileNameActual = oldImagePath.slice(22)
+    fs.unlink(`${fileNameActual}`, (err) => {
+        if (err) {
+            console.log("Error while deleting file" + err)
+        } else {
+            console.log("File Deleted successfully.")
+        }
+    })
     res.redirect('/')
 }
 

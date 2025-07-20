@@ -12,7 +12,11 @@
 
     <!-- ───────────── BLOG FORM ───────────── -->
     <section class="blog-section">
-      <form action="/edit/<%= data[0].id %>" method="post">
+      <form
+        action="/edit/<%= data[0].id %>"
+        method="post"
+        enctype="multipart/form-data"
+      >
         <h2 class="blog-form__heading">Edit Blog</h2>
 
         <label>
@@ -36,7 +40,15 @@
             required
           />
         </label>
-
+        <label for="uploadFile">
+          <span>Thumbnai</span>
+          <input
+            type="file"
+            name="image"
+            id="uploadFile"
+            accept="image/*"
+          />
+        </label>
         <label>
           <span>Description</span>
           <textarea
