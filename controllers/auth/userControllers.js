@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const { User } = require('../../model')
 const jwt = require('jsonwebtoken')
+const { sendMail } = require('../../config/sendMail.js')
 
 exports.createUser = async (req, res) => {
     const { username, email, password, confirmPassword } = req.body
@@ -60,4 +61,30 @@ exports.renderLoginForm = (req, res) => {
 exports.logOUt = (req, res) => {
     res.clearCookie('token')
     res.redirect('/login')
+}
+
+exports.forgotPasssword = (req, res) => {
+    res.render("forgotPassword")
+}
+
+exports.checkForgotPasssword = async (req, res) => {
+    const { email } = req.body
+    if (!email) {
+        return res.status(400).send("Email is mandetory.")
+    }
+    const emailExists = await User.findAll({
+        where: {
+            email: email
+        }
+    })
+    if (emailExists.length === 0) {
+        return res.redirect("/register")
+    } else {
+        const otp = Math.floor(10000 + Math.random() * 90000)
+        console.log(otp)
+        sendMail(email, otp)
+        res.send("OTP sent!")
+    }
+
+
 }
