@@ -118,10 +118,10 @@ exports.handleOtp = async (req, res) => {
         const currentTime = Date.now()
         const otpGeneratedTime = userData[0].otpGeneratedTime
         if (currentTime - otpGeneratedTime <= 120000) {
-            res.redirect('/password-change/?email=' + email)
-            userData[0].otpGeneratedTime = null
-            userData[0].otp = null
-            await userData[0].save()
+            res.redirect(`/password-change/?email=${email}&&otp=${otp}`)
+            // userData[0].otpGeneratedTime = null
+            // userData[0].otp = null
+            // await userData[0].save()
 
         } else {
             userData[0].otpGeneratedTime = null
@@ -135,15 +135,16 @@ exports.handleOtp = async (req, res) => {
 }
 
 exports.renderPwChangeForm = (req, res) => {
-    const { email } = req.query
-    res.render("changePw", { email })
+    const { email, otp } = req.query
+    console.log(email, otp)
+    res.render("changePw", { email, otp })
 }
 
 exports.handlePwChange = async (req, res) => {
-    const { email } = req.params
+    const { email, otp } = req.params
+    console.log(email, otp)
     const { password, confirmPassword } = req.body
-    console.log(password, confirmPassword, email)
-    if (!password || !confirmPassword || !email) {
+    if (!password || !confirmPassword || !email || !otp) {
         return res.send("Please provide all info.")
     }
     if (password !== confirmPassword) {
@@ -151,16 +152,21 @@ exports.handlePwChange = async (req, res) => {
     }
     const doesUserExists = await User.findAll({
         where: {
-            email
+            email,
+            otp
         }
     })
-    console.log(doesUserExists)
     if (doesUserExists.length === 0) {
         return res.send("User is not register")
     }
-
+    const currentTime = Date.now()
+    const otpGeneratedTime = doesUserExists[0].otpGeneratedTime
+    if (currentTime - otpGeneratedTime >= 120000) {
+        return res.redirect("/forgot-password")
+    }
     doesUserExists[0].password = bcrypt.hashSync(password, 10)
-    doesUserExists[0].save()
-    res.send("Password changed successfully!")
-
+    doesUserExists[0].otpGeneratedTime = null
+    doesUserExists[0].otp = null
+    await doesUserExists[0].save()
+    res.redirect("/login")
 }

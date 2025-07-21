@@ -11,5 +11,5 @@ router.route('/otp').get(renderOtpForm)
 router.route('/otp/:email').post(handleOtp)
 
 router.route('/password-change').get(renderPwChangeForm)
-router.route("/password-change/:email").post(handlePwChange)
-module.exports = router 
+router.route("/password-change/:email/:otp").post(handlePwChange)
+module.exports = router

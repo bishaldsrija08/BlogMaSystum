@@ -97,7 +97,7 @@
 <body>
        <!-- Import nav  -->
     <%- include('../components/navbar.ejs')%>
-  <form class="form-wrapper" action="/password-change/<%- email %>" method="POST">
+  <form class="form-wrapper" action="/password-change/<%- email %>/<%- otp %>" method="POST">
     <h2>Change pw</h2>
 
     <div class="input-group">
