@@ -83,8 +83,84 @@ exports.checkForgotPasssword = async (req, res) => {
         const otp = Math.floor(10000 + Math.random() * 90000)
         console.log(otp)
         sendMail(email, otp)
-        res.send("OTP sent!")
+
+        //Otp rw otp generate vako time save gareko!
+        emailExists[0].otp = otp
+        emailExists[0].otpGeneratedTime = Date.now()
+        await emailExists[0].save()
+
+        res.redirect('/otp/?email=' + email)
+    }
+}
+
+exports.renderOtpForm = (req, res) => {
+    const email = req.query.email
+    console.log(email)
+    res.render('otp', { email })
+}
+
+
+exports.handleOtp = async (req, res) => {
+    const { otp } = req.body
+    const { email } = req.params
+    if (!otp || !email) {
+        res.send("Must provide otp and email.")
+    }
+    const userData = await User.findAll({
+        where: {
+            email: email,
+            otp: otp
+        }
+    })
+    if (userData.length === 0) {
+        res.send("Invalid Otp.")
+    } else {
+        const currentTime = Date.now()
+        const otpGeneratedTime = userData[0].otpGeneratedTime
+        if (currentTime - otpGeneratedTime <= 120000) {
+            res.redirect('/password-change/?email=' + email)
+            userData[0].otpGeneratedTime = null
+            userData[0].otp = null
+            await userData[0].save()
+
+        } else {
+            userData[0].otpGeneratedTime = null
+            userData[0].otp = null
+            await userData[0].save()
+            res.send("Expired")
+        }
+
     }
 
+}
+
+exports.renderPwChangeForm = (req, res) => {
+    const { email } = req.query
+    res.render("changePw", { email })
+}
+
+exports.handlePwChange = async (req, res) => {
+    const { email } = req.params
+    const { password, confirmPassword } = req.body
+    console.log(password, confirmPassword, email)
+    if (!password || !confirmPassword || !email) {
+        return res.send("Please provide all info.")
+    }
+    if (password !== confirmPassword) {
+        return res.send("Password and confirm password must be equal.")
+    }
+    const doesUserExists = await User.findAll({
+        where: {
+            email
+        }
+    })
+    console.log(doesUserExists)
+    if (doesUserExists.length === 0) {
+        return res.send("User is not register")
+    }
+
+    doesUserExists[0].password = bcrypt.hashSync(password, 10)
+    doesUserExists[0].save()
+    res.send("Password changed successfully!")
 
 }

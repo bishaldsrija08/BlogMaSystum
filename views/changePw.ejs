@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PW change form!</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ───── Internal CSS ───── -->
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, sans-serif;
+    }
+
+    /* body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #f3f4f6;
+    } */
+
+    .form-wrapper {
+      width: 100%;
+      max-width: 420px;
+      padding: 2.5rem 2rem;
+      border-radius: 1rem;
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .input-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #6366f1; /* indigo‑500 */
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 0.9rem;
+      margin-top: 0.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      background: #6366f1; /* indigo‑500 */
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #4f46e5; /* indigo‑600 */
+    }
+
+    /* ── Small‑screen tweaks ── */
+    @media (max-width: 480px) {
+      .form-wrapper {
+        padding: 2rem 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+       <!-- Import nav  -->
+    <%- include('../components/navbar.ejs')%>
+  <form class="form-wrapper" action="/password-change/<%- email %>" method="POST">
+    <h2>Change pw</h2>
+
+    <div class="input-group">
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="••••••••"
+        minlength="6"
+        required
+      />
+    </div>
+      <div class="input-group">
+      <label for="confirmPassword">confirmPassword</label>
+      <input
+        type="password"
+        id="password"
+        name="confirmPassword"
+        placeholder="••••••••"
+        minlength="6"
+        required
+      />
+    </div>
+
+    <button type="submit">Change password</button>
+  </form>
+</body>
+</html>
