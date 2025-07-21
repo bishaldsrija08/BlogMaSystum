@@ -1,6 +1,7 @@
-const jwt = require('jsonwebtoken')
+
+const { decodeToken } = require('../config/decodeToken')
 const { User } = require('../model')
-const { promisify } = require('util')                       // ❌ was `require('util').promisify`
+
 
 exports.isAuthenticated = async (req, res, next) => {
     const token = req.cookies.token
@@ -10,10 +11,7 @@ exports.isAuthenticated = async (req, res, next) => {
     }
 
     // Verify token
-    const decodedResult = await promisify(jwt.verify)(      // ❌ missing parentheses around promisified fn
-        token,
-        process.env.JWT_SECRET
-    )
+    const decodedResult = await decodeToken(token, process.env.JWT_SECRET)
 
     // Check if user already exists
     const userExist = await User.findAll({ where: { id: decodedResult.id } })

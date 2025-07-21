@@ -4,6 +4,7 @@ const express = require('express')
 const blogRoutes = require('./routes/blogRoutes')
 const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
+const { decodeToken } = require('./config/decodeToken.js')
 const app = express()
 
 //database connection
@@ -14,8 +15,16 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 //cookie parser
 app.use(cookieParser())
-app.use((req, res, next) => {
+
+app.use(async (req, res, next) => {
     res.locals.currentUser = req.cookies.token
+    const token = req.cookies.token
+    if (token) {
+        const decryptedResult = await decodeToken(token, process.env.JWT_SECRET)
+        if (decryptedResult && decryptedResult.id) {
+            res.locals.currentUserId = decryptedResult.id
+        }
+    }
     next()
 })
 //require dotenv

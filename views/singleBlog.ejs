@@ -29,8 +29,14 @@
         </header>
 
         <section class="blog-post__content"><%= data[0]?.description%></section>
-        <button><a href="/delete/<%= data[0]?.id %>">Delete</a></button>
+
+<% if(currentUser){%>
+  <%if(currentUserId === data[0]?.user?.id){%>
+            <button><a href="/delete/<%= data[0]?.id %>">Delete</a></button>
         <button><a href="/edit/<%= data[0]?.id %>">Edit</a></button>
+  <%}%>
+<%} %>
+
       </article>
     </main>
 
