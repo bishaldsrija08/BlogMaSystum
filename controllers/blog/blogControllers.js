@@ -7,7 +7,7 @@ exports.createBlog = async (req, res) => {
     if (!title || !subtitle || !description || !req.file) {
         return res.status(400).send('All fields are required')
     }
-    // console.log(req.file.filename)
+
     const image = req.file.filename // Get the uploaded file from the request
 
     await blogs.create({

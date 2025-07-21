@@ -81,7 +81,6 @@ exports.checkForgotPasssword = async (req, res) => {
         return res.redirect("/register")
     } else {
         const otp = Math.floor(10000 + Math.random() * 90000)
-        console.log(otp)
         sendMail(email, otp)
 
         //Otp rw otp generate vako time save gareko!
@@ -95,7 +94,6 @@ exports.checkForgotPasssword = async (req, res) => {
 
 exports.renderOtpForm = (req, res) => {
     const email = req.query.email
-    console.log(email)
     res.render('otp', { email })
 }
 
@@ -136,13 +134,11 @@ exports.handleOtp = async (req, res) => {
 
 exports.renderPwChangeForm = (req, res) => {
     const { email, otp } = req.query
-    console.log(email, otp)
     res.render("changePw", { email, otp })
 }
 
 exports.handlePwChange = async (req, res) => {
     const { email, otp } = req.params
-    console.log(email, otp)
     const { password, confirmPassword } = req.body
     if (!password || !confirmPassword || !email || !otp) {
         return res.send("Please provide all info.")
