@@ -9,13 +9,16 @@ exports.createUser = async (req, res) => {
         return res.status(400).send('All fields are required')
     }
     if (password.toLowerCase() !== confirmPassword.toLowerCase()) {
-        return res.status(400).send('Passwords do not match')
+        req.flash("error", "Passwords do not match")
+        res.redirect('/register')
     }
     if (password.length < 10) {
-        return res.status(400).send('Password must be at least 6 characters long')
+        req.flash("error", "Password must be at least 6 characters long")
+        res.redirect('/register')
     }
     if (password.trim() === "" || confirmPassword.trim() === "") {
-        return res.status(400).send('Password cannot be empty')
+        req.flash("error", "Password cannot be empty")
+        res.redirect('/register')
     }
     await User.create({
         username,
@@ -34,28 +37,33 @@ exports.loginUser = async (req, res) => {
     const isUser = await User.findOne({ where: { email } })
 
     if (!isUser) {
-        return res.status(404).send('User not found')
+        req.flash("error", "User not found.")
+        res.redirect('/login')
     }
 
     const isMatch = await bcrypt.compare(password, isUser.password)
     if (!isMatch) {
-        return res.status(401).send('Invalid credentials')
+        req.flash("error", "Invalid Crendentials")
+        res.redirect('/login')
     }
     // Here you can generate a JWT token and send it back to the client
     const token = jwt.sign({ id: isUser.id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN || "30d"
     });
     res.cookie('token', token)
+    req.flash("success", "Login success")
     res.redirect('/')
 }
 
 exports.renderRegisterForm = (req, res) => {
-    res.render('register')
+    const error = req.flash("error")
+    res.render('register', { error })
 }
 
 
 exports.renderLoginForm = (req, res) => {
-    res.render('login')
+    const error = req.flash("error")
+    res.render('login', { error })
 }
 
 exports.logOUt = (req, res) => {
@@ -94,7 +102,8 @@ exports.checkForgotPasssword = async (req, res) => {
 
 exports.renderOtpForm = (req, res) => {
     const email = req.query.email
-    res.render('otp', { email })
+    const error = req.flash("error")
+    res.render('otp', { email, error })
 }
 
 
@@ -111,7 +120,8 @@ exports.handleOtp = async (req, res) => {
         }
     })
     if (userData.length === 0) {
-        res.send("Invalid Otp.")
+        req.flash("error", "Invalid Otp.")
+        res.redirect('/otp/?email=' + email)
     } else {
         const currentTime = Date.now()
         const otpGeneratedTime = userData[0].otpGeneratedTime
@@ -125,7 +135,8 @@ exports.handleOtp = async (req, res) => {
             userData[0].otpGeneratedTime = null
             userData[0].otp = null
             await userData[0].save()
-            res.send("Expired")
+            req.flash("error", "OTP expired")
+            res.redirect('/otp')
         }
 
     }
@@ -133,8 +144,9 @@ exports.handleOtp = async (req, res) => {
 }
 
 exports.renderPwChangeForm = (req, res) => {
+    const error = req.flash("error")
     const { email, otp } = req.query
-    res.render("changePw", { email, otp })
+    res.render("changePw", { email, otp, error })
 }
 
 exports.handlePwChange = async (req, res) => {
@@ -144,7 +156,8 @@ exports.handlePwChange = async (req, res) => {
         return res.send("Please provide all info.")
     }
     if (password !== confirmPassword) {
-        return res.send("Password and confirm password must be equal.")
+        req.flash("error", "Password and confirm password must be equal.")
+        res.redirect(`/password-change/?email=${email}&&otp=${otp}`)
     }
     const doesUserExists = await User.findAll({
         where: {
@@ -153,7 +166,8 @@ exports.handlePwChange = async (req, res) => {
         }
     })
     if (doesUserExists.length === 0) {
-        return res.send("User is not register")
+        req.flash("error", "User is not register")
+        res.redirect(`/password-change/?email=${email}&&otp=${otp}`)
     }
     const currentTime = Date.now()
     const otpGeneratedTime = doesUserExists[0].otpGeneratedTime

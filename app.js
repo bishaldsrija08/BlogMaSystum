@@ -13,8 +13,23 @@ require('./model/index.js')
 //json buj
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+
 //cookie parser
 app.use(cookieParser())
+
+//Require session express
+const session = require("express-session")
+
+//Require connect flash
+const flash = require('connect-flash')
+
+app.use(session({
+    secret: "secret",
+    resave:false,
+    saveUninitialized: false
+}))
+
+app.use(flash())
 
 app.use(async (req, res, next) => {
     res.locals.currentUser = req.cookies.token

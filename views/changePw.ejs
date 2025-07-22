@@ -99,7 +99,7 @@
     <%- include('../components/navbar.ejs')%>
   <form class="form-wrapper" action="/password-change/<%- email %>/<%- otp %>" method="POST">
     <h2>Change pw</h2>
-
+<h3><%- error %></h3>
     <div class="input-group">
     <div class="input-group">
       <label for="password">Password</label>

@@ -93,6 +93,7 @@
     <%- include('../components/navbar.ejs')%>
     <form class="login-form" action="/login" method="POST">
       <h2>Login</h2>
+      <h3><%- error %></h3>
 
       <div class="form-group">
         <label for="email">Email</label>

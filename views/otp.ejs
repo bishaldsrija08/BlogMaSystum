@@ -83,6 +83,7 @@
     <%- include("../components/navbar.ejs") %>
     <div class="container">
       <form class="forgot-form" action="/otp/<%- email %>" method="post">
+        <p><%- error %></p>
         <h2>Enter your OTP.</h2>
         <p>Enter your otp sent on your email.</p>
 

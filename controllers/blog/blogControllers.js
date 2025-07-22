@@ -26,12 +26,13 @@ exports.renderCreateBlogForm = (req, res) => {
 }
 
 exports.getAllBlogs = async (req, res) => {
+    const success = req.flash("success")
     const data = await blogs.findAll({
         include: {
             model: User //joining tables 
         }
     })
-    res.render('blogs', { data })
+    res.render('blogs', { data, success })
 }
 
 exports.renderSingleBlog = async (req, res) => {
