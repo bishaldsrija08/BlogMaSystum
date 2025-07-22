@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const { sendMail } = require('../../config/sendMail.js')
 
 exports.createUser = async (req, res) => {
-    try {
+    // try {
         const { username, email, password, confirmPassword } = req.body
         if (!username || !email || !password || !confirmPassword) {
             return res.status(400).send('All fields are required')
@@ -27,10 +27,10 @@ exports.createUser = async (req, res) => {
             password: await bcrypt.hash(password, 10)
         })
         res.redirect('/login')
-    } catch (error) {
-        console.error(error)
-        res.status(500).send("Internal server error.")
-    }
+    // } catch (error) {
+    //     console.error(error)
+    //     res.status(500).send("Internal server error.")
+    // }
 }
 
 exports.loginUser = async (req, res) => {

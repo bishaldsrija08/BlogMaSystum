@@ -1,6 +1,7 @@
+const db = require("../../model")
 const { blogs, User } = require("../../model")
 const fs = require('fs')
-
+const sequelize = db.sequelize
 exports.createBlog = async (req, res) => {
     try {
         const userId = req.user.id
@@ -33,11 +34,15 @@ exports.renderCreateBlogForm = (req, res) => {
 exports.getAllBlogs = async (req, res) => {
     try {
         const success = req.flash("success")
-        const data = await blogs.findAll({
-            include: {
-                model: User
-            }
+        // const data = await blogs.findAll({
+        //     include: {
+        //         model: User
+        //     }
+        // })
+        const data = await sequelize.query("SELECT * FROM blogs", {
+            type: sequelize.QueryTypes.SELECT
         })
+        console.log(data)
         res.render('blogs', { data, success })
     } catch (error) {
         console.error(error)
